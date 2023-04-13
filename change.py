@@ -1,21 +1,28 @@
 from typing import List
 
-COIN_VALUES = [ 100, 25, 10, 5, 1 ]
+from benchmark import benchmark
 
-def change(n: int) -> List[int]:
+
+def change(n: int, coin_values: List[int]) -> List[int]:
+    num_iter = 0
     remaining = n
     change = []
 
     while remaining > 0:
-        for cv in COIN_VALUES:
+        for cv in coin_values:
+            num_iter += 1
+
             if remaining >= cv:
                 change.append(cv)
                 remaining -= cv
                 break
 
-    return change
+    return (change, num_iter)
 
 
 if __name__ == "__main__":
-    N = 289
-    print(f'Best change for $ {N / 100.0}: {[c / 100.0 for c in change(N)]}')
+    COIN_VALUES = [ 100, 25, 10, 5, 1 ]
+    nums = [ 289, 34810, 8790100, 200312000 ]
+
+    for n in nums:
+        benchmark(change, False, n, COIN_VALUES)
